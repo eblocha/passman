@@ -1,10 +1,17 @@
-import secrets
 from base64 import b64encode, b64decode
 import hashlib
 from Cryptodome.Cipher import AES
 import os
 from Cryptodome.Random import get_random_bytes
 import json
+
+with open('vault_config.json','r') as f:
+    cfg = json.load(f)
+    global VAULT_ROOT
+    VAULT_ROOT = cfg['root']
+
+def vault_file(name, e=''):
+    return os.path.join(VAULT_ROOT,f'{name}{e}.json')
 
 def encrypt_master(master_key,master_pwd):
     """Encrypt a master key with AES using the master password"""
@@ -50,23 +57,23 @@ def write_file(name,db,master_pwd,master_key):
     """Encrypt and write a database to disk"""
     db_cipher = encrypt_file(json.dumps(db),master_pwd,master_key)
     db_file = {key: b64encode(db_cipher[key]).decode('utf-8') for key in db_cipher}
-    with open(f'{name}.json','w') as f:
+    with open(vault_file(name),'w') as f:
         json.dump(db_file,f)
 
 def new_db(name,master_pwd):
     """Initialize a new database master key and file"""
     master_key, master_dict = generate_keys(master_pwd)
     master_file = {key: b64encode(master_dict[key]).decode('utf-8') for key in master_dict}
-    with open(f'{name}_master.json','w') as f:
+    with open(vault_file(name),'w') as f:
         json.dump(master_file,f)
     db = dict()
     write_file(name, db, master_pwd, master_key)
 
 def open_db(name,master_pwd):
     """Open and decrypt a database"""
-    with open(f'{name}_master.json','r') as f:
+    with open(vault_file(name),'r') as f:
         master_file = json.load(f)
-    with open(f'{name}.json','r') as f:
+    with open(vault_file(name),'r') as f:
         db_file = json.load(f)
     
     master_dict = {key: b64decode(master_file[key]) for key in master_file}
@@ -78,18 +85,12 @@ def open_db(name,master_pwd):
 
 def change_master(name,master_pwd,new_master_pwd):
     """Change the master password and re-encrypt the master key"""
-    with open(f'{name}_master.json','r') as f:
+    with open(vault_file(name,'_master'),'r') as f:
         master_file = json.load(f)
         master_dict = {key: b64decode(master_file[key]) for key in master_file}
 
     master = decrypt_master(master_pwd,master_dict)
     new_master_dict = encrypt_master(master,new_master_pwd)
     master_file = {key: b64encode(master_dict[key]).decode('utf-8') for key in master_dict}
-    with open(f'{name}_master.json','w') as f:
+    with open(vault_file(name,'_master'),'w') as f:
         json.dump(master_file,f)
-
-
-if __name__=='__main__':
-    add('v','abc123;?','facebook.com',{'username':'hello','password':'xyz098'})
-    print(retrieve('v','abc123;?','google.com'))
-    print(retrieve('v','abc123;?','facebook.com'))

@@ -10,7 +10,7 @@ def main_new(args):
             name = input('Vault Name: ')
         else:
             name = args[0]
-        if os.path.isfile(f'{name}.json'):
+        if os.path.isfile(vault.vault_file(name)):
             overwrite = input(f'Vault {name} already exists. Overwrite? [y/n]: ').lower()
             if overwrite!='y':
                 return
@@ -32,7 +32,7 @@ def main_open(args):
             name = input('Vault Name: ')
         else:
             name = args[0]
-        if not os.path.isfile(f'{name}.json'):
+        if not os.path.isfile(vault.vault_file(name)):
             print(f'No such vault: {name}')
             return
         break
