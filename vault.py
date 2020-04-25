@@ -11,7 +11,11 @@ with open('vault_config.json','r') as f:
     VAULT_ROOT = cfg['root']
 
 def vault_file(name, e=''):
-    return os.path.join(VAULT_ROOT,f'{name}{e}.json')
+    """Return the full path and file of the vault or master"""
+    return os.path.join(VAULT_ROOT,name,f'{name}{e}.json')
+
+def vault_folder(name):
+    return os.path.join(VAULT_ROOT,name)
 
 def encrypt_master(master_key,master_pwd):
     """Encrypt a master key with AES using the master password"""
@@ -64,14 +68,17 @@ def new_db(name,master_pwd):
     """Initialize a new database master key and file"""
     master_key, master_dict = generate_keys(master_pwd)
     master_file = {key: b64encode(master_dict[key]).decode('utf-8') for key in master_dict}
-    with open(vault_file(name),'w') as f:
+    path = vault_folder(name)
+    if not os.path.exists(path):
+        os.mkdir(path)
+    with open(vault_file(name,'_master'),'w') as f:
         json.dump(master_file,f)
     db = dict()
     write_file(name, db, master_pwd, master_key)
 
 def open_db(name,master_pwd):
     """Open and decrypt a database"""
-    with open(vault_file(name),'r') as f:
+    with open(vault_file(name,'_master'),'r') as f:
         master_file = json.load(f)
     with open(vault_file(name),'r') as f:
         db_file = json.load(f)

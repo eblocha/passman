@@ -21,10 +21,12 @@ def _help(commands):
 def main():
     """Main shell routine to work with multiple databases"""
     commands = {
-        '--new [vault name]': 'create new vault',
-        '--open [vault name]': 'open existing vault',
+        '--new <vault name>': 'create new vault',
+        '--open <vault name>': 'open existing vault',
+        '--rem <vault name>': 'delete existing vault',
         '--exit': 'exit shell'
     }
+    print('Welcome to Vault!\nEnter "-h" or "--help" for help.')
     while True:
         command = input(f'VAULT > ')
         command, args = getargs(command)
@@ -34,6 +36,8 @@ def main():
             mc.main_new(args)
         elif command in ['-o','--open']:
             mc.main_open(args)
+        elif command in ['-r','--rem']:
+            mc.main_delete(args)
         elif command in ['-e','--exit']:
             return
         elif command:
