@@ -5,9 +5,7 @@ Password manager command line interface written in python.
 Usage
 -----
 Create a json file in the same directory as vault.py:\
-`{`\
-`    "root": "path/to/vault/folder`\
-`}`
+`{"root": "path/to/vault/folder"}`
 
 Start the shell\
 `>python shell.py`\
