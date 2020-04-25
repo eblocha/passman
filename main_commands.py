@@ -76,4 +76,9 @@ def main_delete(args):
             shutil.rmtree(vault.vault_folder(name))
         return
 
-        
+def main_list():
+    vaults = os.listdir(vault.VAULT_ROOT)
+    vaults = [v for v in vaults if os.path.isdir(vault.vault_folder(v))]
+    if vaults:
+        for v in vaults:
+            print(v)

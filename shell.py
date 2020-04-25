@@ -24,6 +24,7 @@ def main():
         '--new <vault name>': 'create new vault',
         '--open <vault name>': 'open existing vault',
         '--rem <vault name>': 'delete existing vault',
+        '--list': 'list all existing vaults',
         '--exit': 'exit shell'
     }
     print('Welcome to Vault!\nEnter "-h" or "--help" for help.')
@@ -38,10 +39,12 @@ def main():
             mc.main_open(args)
         elif command in ['-r','--rem']:
             mc.main_delete(args)
+        elif command in ['-l','--list']:
+            mc.main_list()
         elif command in ['-e','--exit']:
             return
         elif command:
-            print('Command not recognized. Enter "-h" or "--help" for help')
+            print('Command not recognized. Enter "-h" or "--help" for help.')
 
 
 def db_shell(name,master_pwd):
