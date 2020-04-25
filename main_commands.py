@@ -82,3 +82,5 @@ def main_list():
     if vaults:
         for v in vaults:
             print(v)
+    else:
+        print('No vaults.')
