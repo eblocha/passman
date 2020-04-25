@@ -2,6 +2,9 @@ Passman
 =======
 Password manager command line interface written in python.
 
+**Do not use this implementation for sensitive passwords. This is only an exercise, and is not as secure as something like KeePass**  
+**Passwords and keys cannot be easily erased from memory in Python**
+
 Usage
 -----
 Create a file called `vault_config.json` in the same directory as vault.py:  
