@@ -31,7 +31,9 @@ def main():
     while True:
         command = input(f'VAULT > ')
         command, args = getargs(command)
-        if command in ['-h','--help']:
+        if not command:
+            continue
+        elif command in ['-h','--help']:
             _help(commands)
         elif command in ['-n','--new']:
             mc.main_new(args)
@@ -43,7 +45,7 @@ def main():
             mc.main_list()
         elif command in ['-e','--exit']:
             return
-        elif command:
+        else:
             print('Command not recognized. Enter "-h" or "--help" for help.')
 
 
@@ -60,6 +62,8 @@ def db_shell(name,master_pwd):
     while True:
         command = input(f'({name}) >>> ')
         command, args = getargs(command)
+        if not command:
+            continue
         if command in ['-h','--help']:
             _help(commands)
         elif command in ['-e','--exit']:
@@ -73,6 +77,8 @@ def db_shell(name,master_pwd):
             dbc.retrieve(db,args)
         elif command in ['-l','--list']:
             dbc.list_keys(db)
+        else:
+            print('Command not recognized.')
             
 
 
