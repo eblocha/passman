@@ -4,10 +4,10 @@ Password manager command line interface written in python.
 
 Usage
 -----
-Create a json file in the same directory as vault.py:\
+Create a json file in the same directory as vault.py:  
 `{"root": "path/to/vault/folder"}`
 
-Start the shell\
+Start the shell
 ```
 >python shell.py
 Welcome to Vault!
@@ -15,7 +15,7 @@ Enter "-h" or "--help" for help
 VAULT > 
 ```
 
-Create a new vault\
+Create a new vault
 ```
 VAULT > --new main
 Master password (enter to abort): 
@@ -23,7 +23,7 @@ Re-enter master password:
 (main) >>> 
 ```
 
-Create an entry in the vault\
+Create an entry in the vault
 ```
 (main) >>> --add google.com
 Enter a username: user
@@ -31,16 +31,16 @@ Enter a password:
 (main) >>> 
 ```
 
-Get an entry in the vault\
+Get an entry in the vault
 ```
 (main) >>> --get google.com
 google.com
 {'username': 'user', 'password': 'password'}
 (main) >>> 
-```\
+```
 You can list multiple entries after `--get` to get more than one at a time
 
-List of commands available inside the vault:\
+List of commands available inside the vault:
 ```
 --add: add or update entry to database
 --rem: remove entry from database
